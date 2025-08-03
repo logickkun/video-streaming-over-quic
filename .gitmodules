@@ -1,0 +1,28 @@
+[submodule "vsoq-react-frontEnd"]
+	path = vsoq-react-frontEnd
+	url = https://github.com/logickkun/vsoq-react-frontEnd.git
+	branch = master
+[submodule "vsoq-spring-authentication-server"]
+	path = vsoq-spring-authentication-server
+	url = https://github.com/logickkun/vsoq-spring-authentication-server.git
+	branch = master
+[submodule "vsoq-spring-authorization-server"]
+	path = vsoq-spring-authorization-server
+	url = https://github.com/logickkun/vsoq-spring-authorization-server.git
+	branch = master
+[submodule "vsoq-spring-cloud-gateway"]
+	path = vsoq-spring-cloud-gateway
+	url = https://github.com/logickkun/vsoq-spring-cloud-gateway.git
+	branch = master
+[submodule "vsoq-spring-data-redis"]
+	path = vsoq-spring-data-redis
+	url = https://github.com/logickkun/vsoq-spring-data-redis.git
+	branch = master
+[submodule "vsoq-spring-oauth2-resource-server"]
+	path = vsoq-spring-oauth2-resource-server
+	url = https://github.com/logickkun/vsoq-spring-oauth2-resource-server.git
+	branch = master
+[submodule "vsoq-video-server"]
+	path = vsoq-video-server
+	url = https://github.com/logickkun/vsoq-video-server.git
+	branch = master
