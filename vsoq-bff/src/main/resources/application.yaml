@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: vsoq-bff
+
+  session:
+    redis:
+      namespace: vsoq:bff:session
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+bff:
+  oauth:
+    authorize-uri: "http://localhost:8080/oauth2/authorize"
+    redirect-uri: "http://localhost:8080/bff/web/callback"
+    token-uri: "http://localhost:9000/oauth2/token" # AuthN 서버
+    userinfo-uri: "http://localhost:9000/connect/userinfo"
+    client-id: "vsoq-client"
+    scope: "openid profile"
+
+server:
+  port: 8079
+  servlet:
+    session:
+      timeout: 10m
+      cookie:
+        http-only: true
+        same-site: Lax
