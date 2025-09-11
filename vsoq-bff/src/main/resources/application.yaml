@@ -17,14 +17,30 @@ bff:
     redirect-uri: "http://localhost:8080/bff/web/callback"
     token-uri: "http://localhost:9000/oauth2/token" # AuthN 서버
     userinfo-uri: "http://localhost:9000/connect/userinfo"
-    client-id: "vsoq-client"
+    client-id: "vsoq-bff-web-client"
     scope: "openid profile"
 
 server:
   port: 8079
   servlet:
     session:
-      timeout: 10m
+      timeout: 30m                     # 세션 TTL (예: 30분)
       cookie:
-        http-only: true
-        same-site: Lax
+        name: VSOQSESSION              # 식별용
+        http-only: true                # ★ JS 접근 금지
+        secure: true                   # ★ HTTPS에서만 전송(로컬 개발 땐 false 가능)
+        same-site: LAX
+
+logging:
+  level:
+    # Gateway core
+    org.springframework.cloud.gateway: DEBUG
+    # Reactor Netty HTTP 서버/클라이언트 (실제 네트워크 레벨)
+    reactor.netty.http.server: DEBUG
+    reactor.netty.http.client: DEBUG
+    # Spring WebFlux 핸들러
+    org.springframework.web: DEBUG
+    # Security 처리
+    org.springframework.security: DEBUG
+    # (Optional) 전체 로그 TRACE
+    # ROOT: DEBUG`

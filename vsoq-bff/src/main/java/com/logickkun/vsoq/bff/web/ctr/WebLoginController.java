@@ -2,14 +2,16 @@ package com.logickkun.vsoq.bff.web.ctr;
 
 import com.logickkun.vsoq.bff.shared.PkceUtil;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Controller
 public class WebLoginController {
 
@@ -22,7 +24,7 @@ public class WebLoginController {
     @Value("${bff.oauth.scope}")
     private String scope;
 
-    @GetMapping("/bff/web/login")
+    @RequestMapping("/bff/web/login")
     public ResponseEntity<Void> startLogin(HttpSession session) {
         // 1) 랜덤 생성
         String state = PkceUtil.randomUrlSafe(16);
@@ -46,6 +48,7 @@ public class WebLoginController {
                 + "&code_challenge=" + enc(codeChallenge)
                 + "&code_challenge_method=S256";
 
+        log.info("url {}", url);
         // 4) 302 리다이렉트
         return ResponseEntity.status(302)
                 .header("Location", url)

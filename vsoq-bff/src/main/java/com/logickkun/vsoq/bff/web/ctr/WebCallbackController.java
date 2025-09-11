@@ -4,6 +4,7 @@ import com.logickkun.vsoq.bff.shared.dto.TokenResponse;
 import com.logickkun.vsoq.bff.shared.dto.UserInfo;
 import com.logickkun.vsoq.bff.shared.session.UserProfile;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
 
+@Slf4j
 @Controller
 public class WebCallbackController {
 
@@ -76,6 +78,9 @@ public class WebCallbackController {
                 .retrieve()
                 .bodyToMono(TokenResponse.class)
                 .block();
+
+
+        log.info("tokens {}", tokens);
 
         if (tokens == null || tokens.accessToken() == null) {
             return ResponseEntity.status(302).location(URI.create(afterLoginRedirect + "?login_error=token_exchange_failed")).build();
