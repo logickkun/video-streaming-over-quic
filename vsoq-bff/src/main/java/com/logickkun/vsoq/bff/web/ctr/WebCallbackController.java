@@ -13,6 +13,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
@@ -37,6 +38,8 @@ public class WebCallbackController {
     private String redirectUri;
     @Value("${bff.ui.after-login-redirect:/}")
     private String afterLoginRedirect;
+    @Value("${bff.oauth.client-secret}")
+    private String clientSecret;
 
     @GetMapping("/bff/web/callback")
     public ResponseEntity<Void> callback(
@@ -69,12 +72,13 @@ public class WebCallbackController {
         form.add("code", code);
         form.add("redirect_uri", redirectUri);
         form.add("client_id", clientId);
+        form.add("client_secret", clientSecret);
         form.add("code_verifier", codeVerifier);
 
         TokenResponse tokens = http.post()
                 .uri(tokenUri) // http://localhost:9000/oauth2/token
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .bodyValue(form)
+                .body(BodyInserters.fromFormData(form))
                 .retrieve()
                 .bodyToMono(TokenResponse.class)
                 .block();
@@ -94,6 +98,8 @@ public class WebCallbackController {
                 .bodyToMono(UserInfo.class)
                 .defaultIfEmpty(new UserInfo(null,null,null,null,null,null))
                 .block();
+
+        log.info("info {}", info);
 
         // 4) 세션에 최소 정보 저장 (표시용 + 서버 측 토큰 핸들)
         String userId = info != null ? info.sub() : null;

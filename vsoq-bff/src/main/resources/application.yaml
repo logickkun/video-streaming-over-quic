@@ -18,6 +18,7 @@ bff:
     token-uri: "http://localhost:9000/oauth2/token" # AuthN 서버
     userinfo-uri: "http://localhost:9000/connect/userinfo"
     client-id: "vsoq-bff-web-client"
+    client-secret: "vsoq-bff-web-secret"
     scope: "openid profile"
 
 server:
