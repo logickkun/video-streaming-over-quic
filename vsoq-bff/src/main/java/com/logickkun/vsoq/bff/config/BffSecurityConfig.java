@@ -33,7 +33,7 @@ public class BffSecurityConfig {
                                 "/oauth2/authorize", "/oauth2/token", "/oauth2/revoke", "/oauth2/jwks", "/connect/register", "/connect/userinfo", "/connect/logout",
 
                                 // Error Page
-                                "/error"
+                                "/error/**"
 
                         ).permitAll()
                         .anyRequest().authenticated()

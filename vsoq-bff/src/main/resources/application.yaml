@@ -5,21 +5,15 @@ spring:
   session:
     redis:
       namespace: vsoq:bff:session
+      flush-mode: on_save           # 응답 커밋 시 저장
+      save-mode: on_set_attribute   # 바뀐 속성만 저장
+    timeout: 1d                    # 미설정 시 server.servlet.session.timeout으로 폴백
 
   data:
     redis:
       host: localhost
       port: 6379
-
-bff:
-  oauth:
-    authorize-uri: "http://localhost:8080/oauth2/authorize"
-    redirect-uri: "http://localhost:8080/bff/web/callback"
-    token-uri: "http://localhost:9000/oauth2/token" # AuthN 서버
-    userinfo-uri: "http://localhost:9000/connect/userinfo"
-    client-id: "vsoq-bff-web-client"
-    client-secret: "vsoq-bff-web-secret"
-    scope: "openid profile"
+      timeout: 2s
 
 server:
   port: 8079
@@ -27,10 +21,23 @@ server:
     session:
       timeout: 30m                     # 세션 TTL (예: 30분)
       cookie:
-        name: VSOQSESSION              # 식별용
+        name: JSESSIONID               # 식별용
         http-only: true                # ★ JS 접근 금지
-        secure: true                   # ★ HTTPS에서만 전송(로컬 개발 땐 false 가능)
-        same-site: LAX
+        secure: false                  # ★ HTTPS에서만 전송(로컬 개발 땐 false 가능)
+        same-site: LAX                 # 기본 권장 다른 도메인에서 콜백이면 None(+Secure)
+
+
+
+
+bff:
+  oauth:
+    authorize-uri: "http://localhost:8080/oauth2/authorize"
+    redirect-uri: "http://localhost:8080/bff/web/callback"
+    token-uri: "http://localhost:9000/oauth2/token"
+    userinfo-uri: "http://localhost:9000/connect/userinfo"
+    client-id: "vsoq-bff-web-client"
+    client-secret: "vsoq-bff-web-secret"
+    scope: "openid profile"
 
 logging:
   level:

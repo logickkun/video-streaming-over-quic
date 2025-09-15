@@ -9,6 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
     @Bean
     WebClient http(WebClient.Builder builder) {
-        return builder.build(); // 절대 URL 사용 예정
+        return builder.build();
     }
 }

@@ -3,6 +3,7 @@ package com.logickkun.vsoq.bff.web.ctr;
 import com.logickkun.vsoq.bff.shared.dto.TokenResponse;
 import com.logickkun.vsoq.bff.shared.dto.UserInfo;
 import com.logickkun.vsoq.bff.shared.session.UserProfile;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,11 +47,13 @@ public class WebCallbackController {
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String state,
             @RequestParam(required = false, name = "error") String error,
+            HttpServletRequest request,
             HttpSession session
     ) {
         // 0) 에러 콜백 처리
         if (error != null) {
-            // 필요 시 로깅 후 에러 페이지/SPA 에러 라우트로 보냄
+            // 필요 시 로깅 후 에러 페이지
+            // SPA 에러 라우트로 보냄
             return ResponseEntity.status(302).location(URI.create(afterLoginRedirect + "?login_error=" + error)).build();
         }
         if (code == null || state == null) {
@@ -60,6 +63,7 @@ public class WebCallbackController {
         // 1) state 검증
         String savedState = (String) session.getAttribute("OIDC_STATE");
         String codeVerifier = (String) session.getAttribute("OIDC_CODE_VERIFIER");
+
         // (nonce는 ID Token 검증 시 사용 가능. 지금은 UserInfo 경로라 생략)
         session.removeAttribute("OIDC_STATE"); // 재사용 방지
         if (savedState == null || !savedState.equals(state) || codeVerifier == null) {
@@ -83,8 +87,7 @@ public class WebCallbackController {
                 .bodyToMono(TokenResponse.class)
                 .block();
 
-
-        log.info("tokens {}", tokens);
+        log.info("TokenResponse tokens {}", tokens);
 
         if (tokens == null || tokens.accessToken() == null) {
             return ResponseEntity.status(302).location(URI.create(afterLoginRedirect + "?login_error=token_exchange_failed")).build();
@@ -99,19 +102,23 @@ public class WebCallbackController {
                 .defaultIfEmpty(new UserInfo(null,null,null,null,null,null))
                 .block();
 
-        log.info("info {}", info);
+        log.info("UserInfo info {}", info);
 
         // 4) 세션에 최소 정보 저장 (표시용 + 서버 측 토큰 핸들)
         String userId = info != null ? info.sub() : null;
         String displayName = (info != null) ? info.displayName() : "user";
         String avatar = (info != null) ? info.picture() : null;
 
+        // 세션ID 회전 (Spring Security도 기본 방어하지만, 콜백 지점에서 명시적으로 수행 권장)
+        request.changeSessionId();
+
+        // 이후에 세션 속성 저장
         session.setAttribute("USER", new UserProfile(userId, displayName, avatar));
-        // 토큰은 브라우저에 주지 않음 — 서버 세션에만 저장
-        session.setAttribute("TOKENS_ACCESS", tokens.accessToken());
-        session.setAttribute("TOKENS_REFRESH", tokens.refreshToken());
-        session.setAttribute("TOKENS_SCOPE", tokens.scope());
-        session.setAttribute("TOKENS_EXPIRES_IN", tokens.expiresIn());
+        session.setAttribute("TOKENS_ACCESS",       tokens.accessToken());
+        session.setAttribute("TOKENS_REFRESH",      tokens.refreshToken());
+        session.setAttribute("TOKENS_SCOPE",        tokens.scope());
+        session.setAttribute("TOKENS_EXPIRES_IN",   tokens.expiresIn());
+
 
         // 5) SPA 홈으로 302
         return ResponseEntity.status(302)
