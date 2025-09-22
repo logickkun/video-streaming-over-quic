@@ -1,9 +1,9 @@
-<h3>Spring framework<h3>
-  - Spring boot 3.5.3
-  - Spring Security 6.5.1
-  - Spring Authorization Server 1.5.1
-  - Spring Oauth2 Resource Server
-  - Redis 7.4.5
-  - Spring JPA
-
-
+<h3>Tech Stack</h3>
+<p>
+  <kbd>Spring Boot 3.5.3</kbd>
+  <kbd>Spring Security 6.5.1</kbd>
+  <kbd>Spring Authorization Server 1.5.1</kbd>
+  <kbd>OAuth2 Resource Server 6.5.4</kbd>
+  <kbd>Spring Data JPA</kbd>
+  <kbd>Spring Data Redis 3.5.4</kbd>
+</p>
