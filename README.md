@@ -1,4 +1,4 @@
-<h3>Spring FrameWork</h3>
+<h3>Spring Framework</h3>
 <p>
   <kbd>Spring Boot 3.5.3</kbd>
   <kbd>Spring Security 6.5.1</kbd>
