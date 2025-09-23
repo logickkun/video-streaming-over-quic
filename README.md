@@ -46,7 +46,7 @@ QUIC 기반 WebRTC Video Streaming Platform (On-Premise Deployment)
 
 ---
 
-## ⚙️ DevOps & Infra
+## DevOps & Infra
 
 <ul>
   <li><kbd>Docker + Docker Compose + Docker Swarm</kbd> (초기 배포)</li>
