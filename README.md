@@ -68,7 +68,6 @@ QUIC 기반 WebRTC Video Streaming Platform (On-Premise Deployment)
 
 ---
 
-## 코덱 (Codec) 전략
 
 ### Video Codec
 
