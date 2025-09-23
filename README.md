@@ -65,16 +65,6 @@ QUIC 기반 WebRTC Video Streaming Platform (On-Premise Deployment)
   <li><kbd>QUIC Relay</kbd> 기반 실시간 중계 서버 실험</li>
 </ul>
 
-<table>
-<thead>
-<tr><th>유스케이스</th><th>설명</th></tr>
-</thead>
-<tbody>
-<tr><td>🎤 화상회의형 (Zoom/Meet)</td><td>WebRTC SFU 구성 또는 QUIC Relay 구조</td></tr>
-<tr><td>📡 실시간 방송형 (Afreeca/YouTube)</td><td>WebRTC ingest + QUIC CDN 구조</td></tr>
-<tr><td>⏯ DVR형 VOD</td><td>MoQ 기반 DVR 구현 실험</td></tr>
-</tbody>
-</table>
 
 ---
 
